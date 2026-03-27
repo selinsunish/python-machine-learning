@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Request Swap</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      .box { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; max-width: 760px; }
+      label { display: block; margin-top: 0.8rem; font-weight: bold; }
+      select, textarea { width: 100%; max-width: 650px; margin-top: 0.35rem; padding: 0.6rem; }
+      textarea { min-height: 100px; resize: vertical; }
+      .error { color: #b00020; margin-top: 0.8rem; }
+      .btn { margin-top: 0.9rem; padding: 0.65rem 1rem; border: 0; border-radius: 6px; background: #0b57d0; color: #fff; cursor: pointer; }
+      a { color: #0b57d0; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>Request a Swap</h1>
+    <p>
+      <a href="{{ url_for('index') }}">Back to products</a> |
+      <a href="{{ url_for('swaps') }}">My swaps</a>
+    </p>
+
+    <div class="box">
+      <p>You want: <strong>{{ wanted_product.name }}</strong></p>
+
+      {% if error %}
+        <div class="error">{{ error }}</div>
+      {% endif %}
+
+      {% if own_products %}
+        <form method="post" action="{{ url_for('request_swap', product_id=wanted_product._id) }}">
+          <label for="offered_product_id">Select your product to offer</label>
+          <select id="offered_product_id" name="offered_product_id" required>
+            <option value="">Choose your product</option>
+            {% for p in own_products %}
+              <option value="{{ p._id }}">{{ p.name }} ({{ p.condition or '-' }}, ${{ '%.2f'|format(p.price) }})</option>
+            {% endfor %}
+          </select>
+
+          <label for="note">Note (optional)</label>
+          <textarea id="note" name="note" placeholder="Example: I can meet near library at 4 PM"></textarea>
+
+          <button class="btn" type="submit">Send Swap Request</button>
+        </form>
+      {% else %}
+        <p>You need at least one product listed before making a swap offer.</p>
+        <p><a href="{{ url_for('add_form') }}">Add your product first</a></p>
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Swaps</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin-top: 0.7rem; }
+      .status { font-weight: bold; text-transform: capitalize; }
+      .pending { color: #9a6700; }
+      .accepted { color: #0a7f2e; }
+      .rejected { color: #b00020; }
+      .msg { margin: 1rem 0; color: #0a7f2e; }
+      .btn { margin-top: 0.6rem; margin-right: 0.5rem; padding: 0.5rem 0.8rem; border: 0; border-radius: 6px; background: #0b57d0; color: #fff; cursor: pointer; }
+      .btn.reject { background: #b00020; }
+      a { color: #0b57d0; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      h2 { margin-top: 1.4rem; }
+    </style>
+  </head>
+  <body>
+    <h1>My Swap Requests</h1>
+    <p>
+      <a href="{{ url_for('index') }}">Back to products</a> |
+      <a href="{{ url_for('add_form') }}">Add product</a> |
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </p>
+
+    {% if message %}
+      <div class="msg">{{ message }}</div>
+    {% endif %}
+
+    <h2>Incoming Requests</h2>
+    {% if incoming_swaps %}
+      {% for swap in incoming_swaps %}
+        <div class="card">
+          <div><strong>{{ swap.requester_name }}</strong> wants <strong>{{ swap.wanted_product_name }}</strong></div>
+          <div>Offers: <strong>{{ swap.offered_product_name }}</strong></div>
+          {% if swap.note %}
+            <div>Note: {{ swap.note }}</div>
+          {% endif %}
+          <div class="status {{ swap.status }}">{{ swap.status }}</div>
+          {% if swap.status == 'pending' %}
+            <form method="post" action="{{ url_for('respond_swap', swap_id=swap._id, action='accept') }}" style="display:inline;">
+              <button class="btn" type="submit">Accept</button>
+            </form>
+            <form method="post" action="{{ url_for('respond_swap', swap_id=swap._id, action='reject') }}" style="display:inline;">
+              <button class="btn reject" type="submit">Reject</button>
+            </form>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No incoming swap requests.</p>
+    {% endif %}
+
+    <h2>Outgoing Requests</h2>
+    {% if outgoing_swaps %}
+      {% for swap in outgoing_swaps %}
+        <div class="card">
+          <div>You requested: <strong>{{ swap.wanted_product_name }}</strong></div>
+          <div>You offered: <strong>{{ swap.offered_product_name }}</strong></div>
+          <div>Owner: {{ swap.owner_name }}</div>
+          <div class="status {{ swap.status }}">{{ swap.status }}</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No outgoing swap requests.</p>
+    {% endif %}
+  </body>
+</html>

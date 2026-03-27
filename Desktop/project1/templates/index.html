@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>College Resale</title>
+    <style>
+      :root{
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --text: #1f2a37;
+        --muted: #5b6677;
+        --border: #dbe6f5;
+        --shadow: 0 10px 25px rgba(18, 43, 82, 0.06);
+        --shadow-soft: 0 6px 16px rgba(18, 43, 82, 0.05);
+        --blue: #5aa8ff;
+        --blue-dark: #3c8fe8;
+        --blue-ink: #0b57d0;
+        --badge-bg: #eef6ff;
+        --badge-border: #d7e9ff;
+        --demand-bg: #fff1d6;
+        --demand-border: #f1c86b;
+        --used-bg: #f2f3f6;
+        --used-border: #d6dbe3;
+        --new-bg: #e9fff3;
+        --new-border: #97e2b1;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 18px 16px 40px;
+      }
+
+      .nav {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 12px 16px;
+        box-shadow: var(--shadow-soft);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand {
+        font-weight: 900;
+        color: var(--blue-ink);
+        letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .nav a {
+        color: var(--blue-ink);
+        text-decoration: none;
+      }
+
+      .nav a:hover {
+        text-decoration: underline;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .nav-links a.btn-link {
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: #fbfdff;
+      }
+
+      .banner {
+        margin-top: 14px;
+        background: #e5f3ff;
+        border: 1px solid #cfe7ff;
+        color: #0b3d91;
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-weight: 700;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+      }
+
+      .welcome {
+        margin-top: 14px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .filters {
+        margin-top: 18px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px;
+        box-shadow: var(--shadow-soft);
+      }
+
+      .filters h3 {
+        margin: 0 0 10px;
+        font-size: 1rem;
+      }
+
+      .filters form {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: end;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        min-width: 180px;
+      }
+
+      .field label {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .field select {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #fff;
+        outline: none;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--blue);
+        background: var(--blue);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .btn:hover {
+        background: var(--blue-dark);
+        text-decoration: none;
+      }
+
+      .btn-outline {
+        background: #ffffff;
+        color: var(--blue-ink);
+      }
+
+      .btn-outline:hover {
+        background: #f2f7ff;
+      }
+
+      .grid {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 14px;
+        box-shadow: var(--shadow-soft);
+        transition: transform 120ms ease, box-shadow 120ms ease;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+      }
+
+      .card-title-row {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .card h2 {
+        margin: 0;
+        font-size: 1.05rem;
+      }
+
+      .price {
+        font-weight: 900;
+        color: var(--blue-ink);
+        background: #e9f4ff;
+        border: 1px solid #d4e8ff;
+        padding: 6px 10px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+
+      .description {
+        color: var(--muted);
+        line-height: 1.35;
+        font-size: 0.95rem;
+        min-height: 2.7em;
+      }
+
+      .badges {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        background: var(--badge-bg);
+        border: 1px solid var(--badge-border);
+        color: var(--blue-ink);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+
+      .badge.branch {
+        background: #f3f6fb;
+        border-color: #d6dee9;
+        color: #3a4b60;
+      }
+
+      .badge.condition {
+        background: var(--used-bg);
+        border-color: var(--used-border);
+        color: #3a4b60;
+      }
+
+      .badge.condition.new {
+        background: var(--new-bg);
+        border-color: var(--new-border);
+        color: #0a7a2f;
+      }
+
+      .demand {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--demand-bg);
+        border: 1px solid var(--demand-border);
+        color: #7a4a00;
+        font-size: 0.86rem;
+        font-weight: 900;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 2px;
+      }
+
+      .actions a {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #ffffff;
+        color: var(--blue-ink);
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .actions a:hover {
+        background: #f2f7ff;
+      }
+
+      .actions form {
+        margin: 0;
+      }
+
+      .empty {
+        margin-top: 18px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">🎓 College Resale</div>
+        <div class="nav-links">
+          <a href="{{ url_for('index') }}" class="btn-link">Home</a>
+          {% if user %}
+            {% if user.role == 'admin' %}
+              <a href="{{ url_for('admin_dashboard') }}" class="btn-link">Admin Dashboard</a>
+            {% endif %}
+            <a href="{{ url_for('add_form') }}" class="btn-link">Add Product</a>
+            <a href="{{ url_for('view_cart') }}" class="btn-link">Cart</a>
+            <a href="{{ url_for('logout') }}" class="btn-link">Logout</a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="btn-link">Login</a>
+            <a href="{{ url_for('signup') }}" class="btn-link">Signup</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="banner">Buy, Sell &amp; Swap within your campus 🎓</div>
+
+      {% if user %}
+        <div class="welcome">Welcome, {{ user.name }} • {{ user.college }}</div>
+      {% endif %}
+
+      {% if user %}
+        <div class="filters">
+          <h3>Find items for your semester</h3>
+          <form method="get" action="{{ url_for('index') }}">
+            <div class="field">
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject">
+                <option value="">All</option>
+                {% for value in subjects %}
+                  <option value="{{ value }}" {% if selected.subject == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field">
+              <label for="semester">Semester</label>
+              <select id="semester" name="semester">
+                <option value="">All</option>
+                {% for value in semesters %}
+                  <option value="{{ value }}" {% if selected.semester == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field">
+              <label for="branch">Branch</label>
+              <select id="branch" name="branch">
+                <option value="">All</option>
+                {% for value in branches %}
+                  <option value="{{ value }}" {% if selected.branch == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="field" style="min-width: auto;">
+              <label>&nbsp;</label>
+              <button class="btn" type="submit">Apply</button>
+            </div>
+            <div class="field" style="min-width: auto;">
+              <label>&nbsp;</label>
+              <a href="{{ url_for('index') }}" class="btn-link" style="padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border); display: inline-block; background:#fff; font-weight:800; color: var(--blue-ink); text-decoration:none; text-align:center;">Reset</a>
+            </div>
+          </form>
+        </div>
+      {% endif %}
+
+      {% if products %}
+        <div class="grid">
+          {% for p in products %}
+            <div class="card">
+              <div class="card-title-row">
+                <h2>{{ p.name }}</h2>
+                <div class="price">${{ '%.2f'|format(p.price) }}</div>
+              </div>
+
+              {% if p.is_high_demand %}
+                <div class="demand">🔥 High Demand</div>
+              {% endif %}
+
+              <div class="description">{{ p.description }}</div>
+
+              <div class="badges">
+                {% if p.subject %}
+                  <span class="badge">Subject: {{ p.subject }}</span>
+                {% endif %}
+                {% if p.semester %}
+                  <span class="badge">Semester: {{ p.semester }}</span>
+                {% endif %}
+                {% if p.branch %}
+                  <span class="badge branch">Branch: {{ p.branch }}</span>
+                {% endif %}
+                {% if p.condition %}
+                  {% if p.condition == 'New' %}
+                    <span class="badge condition new">Condition: {{ p.condition }}</span>
+                  {% else %}
+                    <span class="badge condition">Condition: {{ p.condition }}</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+
+              <div class="meta">Views: {{ p.views or 0 }} • Added to cart: {{ p.add_to_cart_count or 0 }}</div>
+              <div class="meta">Campus: {{ p.seller_college or '-' }}</div>
+
+              <div class="actions">
+                <a href="{{ url_for('product_detail', product_id=p._id) }}">View</a>
+
+                {% if user %}
+                  <form method="post" action="{{ url_for('add_to_cart', product_id=p._id) }}">
+                    <button class="btn" type="submit">Add to Cart</button>
+                  </form>
+
+                  {% if p.seller_id != user._id|string %}
+                    <form method="get" action="{{ url_for('request_swap', product_id=p._id) }}">
+                      <button class="btn" type="submit" style="background:#8fc7ff; border-color:#8fc7ff;">Request Swap</button>
+                    </form>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty">No products yet. Be the first to add something for your campus!</div>
+      {% endif %}
+    </div>
+  </body>
+</html>
+

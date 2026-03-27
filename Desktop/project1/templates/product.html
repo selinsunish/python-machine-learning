@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Product Details</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; max-width: 760px; }
+      .price { font-weight: bold; font-size: 1.1rem; margin: 0.5rem 0; }
+      .meta { color: #444; margin-top: 0.4rem; }
+      .demand { display: inline-block; margin-top: 0.7rem; padding: 0.2rem 0.45rem; background: #ffe2a8; border: 1px solid #e7b451; border-radius: 5px; font-size: 0.85rem; }
+      .btn { margin-top: 0.7rem; padding: 0.65rem 1rem; border: 0; border-radius: 6px; background: #0b57d0; color: #fff; cursor: pointer; }
+      .top-links a { color: #0b57d0; text-decoration: none; margin-right: 0.75rem; }
+      .top-links a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>Product Details</h1>
+    <p class="top-links">
+      <a href="{{ url_for('index') }}">Back to products</a>
+      {% if user %}
+        <a href="{{ url_for('swaps') }}">My swaps</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+      {% endif %}
+    </p>
+
+    <div class="card">
+      <h2>{{ product.name }}</h2>
+      <div class="price">${{ '%.2f'|format(product.price) }}</div>
+      <p>{{ product.description }}</p>
+      <div class="meta">Subject: {{ product.subject or '-' }}</div>
+      <div class="meta">Semester: {{ product.semester or '-' }}</div>
+      <div class="meta">Branch: {{ product.branch or '-' }}</div>
+      <div class="meta">Condition: {{ product.condition or '-' }}</div>
+      <div class="meta">College: {{ product.seller_college or '-' }}</div>
+      <div class="meta">Views: {{ product.views or 0 }}</div>
+      <div class="meta">Added to cart: {{ product.add_to_cart_count or 0 }}</div>
+      {% if product.is_high_demand %}
+        <div class="demand">High Demand</div>
+      {% endif %}
+
+      {% if user %}
+        <form method="post" action="{{ url_for('add_to_cart', product_id=product._id) }}">
+          <button class="btn" type="submit">Add to Cart</button>
+        </form>
+        {% if product.seller_id != user._id|string %}
+          <form method="get" action="{{ url_for('request_swap', product_id=product._id) }}">
+            <button class="btn" type="submit">Request Swap</button>
+          </form>
+        {% endif %}
+      {% endif %}
+    </div>
+  </body>
+</html>

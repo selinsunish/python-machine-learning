@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - College Resale</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; background: #f5f7fb; color: #1f2a37; }
+      .box { max-width: 820px; border: 1px solid #dbe6f5; background: #fff; border-radius: 12px; padding: 1.25rem; }
+      h1 { margin-top: 0; }
+      .row { margin-top: 0.75rem; padding: 0.75rem; border: 1px solid #e6eefc; border-radius: 10px; background: #fbfdff; }
+      .k { color: #5b6677; font-weight: 700; }
+      .v { font-weight: 900; color: #0b57d0; }
+      a { color: #0b57d0; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .actions { margin-top: 1rem; display: flex; gap: 12px; flex-wrap: wrap; }
+      .btn { display: inline-block; padding: 10px 14px; border-radius: 12px; border: 1px solid #dbe6f5; background: #fff; font-weight: 800; color: #0b57d0; }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome, <b>{{ user.name }}</b>. Only admins can view this page.</p>
+
+      <div class="row">
+        <span class="k">Total users:</span> <span class="v">{{ total_users }}</span>
+      </div>
+      <div class="row">
+        <span class="k">Total products:</span> <span class="v">{{ total_products }}</span>
+      </div>
+      <div class="row">
+        <span class="k">Total carts:</span> <span class="v">{{ total_carts }}</span>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="{{ url_for('index') }}">Back to Home</a>
+        <a class="btn" href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </div>
+  </body>
+</html>
+

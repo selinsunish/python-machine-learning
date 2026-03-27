@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Payment - College Resale</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 2rem; }
+      .box { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; max-width: 600px; }
+      .success { color: #0a7f2e; font-weight: bold; margin-top: 0.75rem; }
+      .btn { margin-top: 1rem; padding: 0.65rem 1rem; border: 0; border-radius: 6px; background: #0b57d0; color: #fff; cursor: pointer; }
+      .btn-link { display: inline-block; margin-top: 1rem; color: #0b57d0; text-decoration: none; }
+      .btn-link:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <h1>Checkout</h1>
+    <div class="box">
+      {% if success %}
+        <div class="success">Payment Successful</div>
+        <a class="btn-link" href="{{ url_for('index') }}">Continue shopping</a>
+      {% else %}
+        {% if items %}
+          <p>Total Amount: <strong>${{ '%.2f'|format(total) }}</strong></p>
+          <form method="post" action="{{ url_for('pay') }}">
+            <button class="btn" type="submit">Pay Now</button>
+          </form>
+        {% else %}
+          <p>Your cart is empty. Add some products first.</p>
+          <a class="btn-link" href="{{ url_for('index') }}">Go to products</a>
+        {% endif %}
+      {% endif %}
+    </div>
+  </body>
+</html>
